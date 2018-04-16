@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">RSS</string>
+    <string name="rssfeed">http://g1.globo.com/dynamo/brasil/rss2.xml</string>
+</resources>
