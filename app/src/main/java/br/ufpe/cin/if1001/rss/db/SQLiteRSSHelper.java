@@ -86,7 +86,6 @@ public class SQLiteRSSHelper extends SQLiteOpenHelper {
     public ItemRSS getItemRSS(String link) throws SQLException {
         SQLiteDatabase dataBase = db.getReadableDatabase();
         String where = ITEM_LINK + " LIKE '" + link + "'";
-        //CursorLoader()
         Cursor cursor = dataBase.query(
                 DATABASE_TABLE,
                 columns,
@@ -97,10 +96,6 @@ public class SQLiteRSSHelper extends SQLiteOpenHelper {
                 null,
                 null);
         ItemRSS item = null;
-
-        String sql = "SELECT "+ITEM_TITLE+", "+ITEM_DATE+","+ITEM_DESC+" FROM "+DATABASE_TABLE+" WHERE "+ITEM_LINK+ "= '"+link+"';" ;
-        Cursor cursor = dataBase.rawQuery(sql, null);
-
         if(cursor.getCount() > 0) {
             cursor.moveToFirst();
             item = new ItemRSS(
@@ -155,11 +150,13 @@ public class SQLiteRSSHelper extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         values.put(ITEM_UNREAD, unread);
 
-        int result = dataBase.update(DATABASE_TABLE, values, ITEM_LINK + " LIKE " + link, null);
+        int result = dataBase.update(
+                DATABASE_TABLE,
+                values,
+                ITEM_LINK + " LIKE ?",
+                new String[]{ link });
 
-        if(result > 0)
-            return true;
-        return false;
+        return result > 0;
     }
 
 }
