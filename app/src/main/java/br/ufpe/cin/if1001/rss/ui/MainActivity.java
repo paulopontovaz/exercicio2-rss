@@ -19,7 +19,7 @@ import android.widget.CursorAdapter;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import br.ufpe.cin.if1001.rss.R;
-import br.ufpe.cin.if1001.rss.Services.LoadRssFeedService;
+import br.ufpe.cin.if1001.rss.Services.UpdateRssFeedDataBaseService;
 import br.ufpe.cin.if1001.rss.db.SQLiteRSSHelper;
 import br.ufpe.cin.if1001.rss.util.Constants;
 
@@ -83,8 +83,11 @@ public class MainActivity extends Activity {
     protected void onStart() {
         super.onStart();
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        String linkfeed = preferences.getString(getString(R.string.rss_feed_key_name), getResources().getString(R.string.rss_feed_link));
-        Intent loadServiceIntent = new Intent(getApplicationContext(), LoadRssFeedService.class);
+        //Obtendo das preferências o link a ser utilizado como fonte das notícias.
+        String linkfeed = preferences.getString(getString(R.string.rss_feed_key_name),
+                getResources().getString(R.string.rss_feed_link));
+        //Criando o intent que chamará o serviço de atualizar o banco de dados
+        Intent loadServiceIntent = new Intent(getApplicationContext(), UpdateRssFeedDataBaseService.class);
         loadServiceIntent.putExtra(Constants.RSS_FEED_KEY_NAME, linkfeed);
         startService(loadServiceIntent);
     }
@@ -116,7 +119,9 @@ public class MainActivity extends Activity {
 
         @Override
         public void onReceive(Context context, Intent intent) {
-            new MainActivity.ExibirFeed().execute();
+            //Carregando as notícias na tela.
+            //Método acionado ao usar "sendBroadcast" no serviço UpdateRssFeedDataBaseService.
+            new ExibirFeed().execute();
         }
     }
 

@@ -68,11 +68,11 @@ public class SQLiteRSSHelper extends SQLiteOpenHelper {
         throw new RuntimeException("nao se aplica");
     }
 
-	//IMPLEMENTAR ABAIXO
-    //Implemente a manipulação de dados nos métodos auxiliares para não ficar criando consultas manualmente
+
     public long insertItem(ItemRSS item) {
         return insertItem(item.getTitle(),item.getPubDate(),item.getDescription(),item.getLink());
     }
+    //Inserindo itens novos no banco utilizando ContentValues.
     public long insertItem(String title, String pubDate, String description, String link) {
         SQLiteDatabase dataBase = db.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -85,12 +85,11 @@ public class SQLiteRSSHelper extends SQLiteOpenHelper {
     }
     public ItemRSS getItemRSS(String link) throws SQLException {
         SQLiteDatabase dataBase = db.getReadableDatabase();
-        String where = ITEM_LINK + " LIKE '" + link + "'";
         Cursor cursor = dataBase.query(
                 DATABASE_TABLE,
                 columns,
-                where,
-                null,
+                ITEM_LINK + " LIKE ?", //WHERE -> filtrando a consulta pelo link
+                new String[]{ link },
                 null,
                 null,
                 null,
@@ -110,7 +109,6 @@ public class SQLiteRSSHelper extends SQLiteOpenHelper {
     }
     public Cursor getItems() throws SQLException {
         SQLiteDatabase dataBase = db.getReadableDatabase();
-        String where = ITEM_UNREAD + " = 1";
         Cursor cursor = null;
 
         try {
@@ -119,7 +117,7 @@ public class SQLiteRSSHelper extends SQLiteOpenHelper {
             cursor = dataBase.query(
                 DATABASE_TABLE,
                 columns,
-                where,
+                    ITEM_UNREAD + " = 1", //WHERE -> obtendo apenas os itens não lidos (unread = true/1).
                 null,
                 null,
                 null,
@@ -136,14 +134,13 @@ public class SQLiteRSSHelper extends SQLiteOpenHelper {
     }
     public boolean markAsUnread(String link) {
         return updateUnread(link, true);
-//        return true;
     }
 
     public boolean markAsRead(String link) {
         return updateUnread(link, false);
-//        return false;
     }
 
+    //Atualizando UNREAD do item cujo link é passado como parâmetro.
     private boolean updateUnread(String link, Boolean unread) {
         SQLiteDatabase dataBase = db.getWritableDatabase();
 

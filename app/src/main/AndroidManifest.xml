@@ -20,7 +20,7 @@
         <activity android:name=".ui.ConfigActivity" />
 
         <service
-            android:name=".Services.LoadRssFeedService"
+            android:name=".Services.UpdateRssFeedDataBaseService"
             android:exported="false"/>
     </application>
 

@@ -20,11 +20,13 @@ import br.ufpe.cin.if1001.rss.ui.MainActivity;
 import br.ufpe.cin.if1001.rss.util.Constants;
 import br.ufpe.cin.if1001.rss.util.ParserRSS;
 
-public class LoadRssFeedService extends IntentService {
+//   Serviço criado para substituir a AsyncTask na MainActivity. Serve para atualizar o banco de dados,
+// verificando se há novos itens e, em caso positivo, inserindo-os no banco.
+public class UpdateRssFeedDataBaseService extends IntentService {
     private SQLiteRSSHelper db;
 
-    public LoadRssFeedService() {
-        super("LoadRssFeedService");
+    public UpdateRssFeedDataBaseService() {
+        super("UpdateRssFeedDataBaseService");
     }
 
     @Override
