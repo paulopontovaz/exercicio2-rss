@@ -3,13 +3,21 @@
 
     <PreferenceCategory android:title="GERAL">
         <EditTextPreference
-            android:defaultValue="@string/rssfeed"
-            android:key="rssfeedlink"
+            android:defaultValue="@string/rss_feed_link"
+            android:key="@string/rss_feed_key_name"
             android:singleLine="true"
             android:title="Link do Feed"
             android:dialogTitle="Troque o link do feed"
             android:dialogMessage="Digite o link"
             android:positiveButtonText="Salvar"
             android:negativeButtonText="Cancelar" />
+        <ListPreference
+            android:key="@string/rss_update_frequency_key_name"
+            android:title="Frequência de Atualização"
+            android:defaultValue="0.5"
+            android:entries="@array/frequency_item_names"
+            android:entryValues="@array/frequency_item_values"
+            android:selectable="true"
+            android:negativeButtonText="Cancelar"/>
     </PreferenceCategory>
 </PreferenceScreen>
